@@ -28,6 +28,7 @@ function populateForm() {
 function handleSubmit(event) {
     event.preventDefault();
     var quantity = event.target.quantity.value;
+    
     // TODO: Prevent the page from reloading
     
   // Do all the things ...
@@ -46,7 +47,9 @@ function addSelectedItemToCart(quantity) {
             if (selectedValue === Product.allProducts[i].name) {
                var product = Product.allProducts[i].name;
                var item = new CartItem(product, quantity);
+               cart.items.push(item);
                console.log(item);
+               console.log(cart.items);
             } 
         }
   // TODO: suss out the item picked from the select list
@@ -55,10 +58,21 @@ function addSelectedItemToCart(quantity) {
 }
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
-function updateCounter() {}
-
+function updateCounter() {
+    var itemCount = document.getElementById="itemCount";
+    itemCount.textContent = cart.items.length;
+}
 // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
+    var cartContentsEl = document.getElementById("cartContents");
+    cartContentsEl.innerHTML= '';
+    var ulEl = document.createElement("ul");
+    cartContentsEl.appendChild(ulEl);
+    for (var i = 0; i < cart.items.length; i++) {
+        var liEl = document.createElement("li");
+        liEl.textContent = cart.items[i].product + ' : ' + cart.items[i].quantity;
+        ulEl.appendChild(liEL);
+    }
   // TODO: Get the item and quantity from the form
   // TODO: Add a new element to the cartContents div with that information
 }

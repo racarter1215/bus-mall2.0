@@ -8,24 +8,30 @@ var cart = new Cart([]);
 // On screen load, we call this method to put all of the busmall options
 // (the things in the Product.allProducts array) into the drop down list.
 function populateForm() {
-
+    for (var i = 0; i < Product.allProducts.length; i++) {
   //TODO: Add an <option> tag inside the form's select for each product
-  var selectElement = document.getElementById('items');
-  for (var i in Product.allProducts) {
-
-  }
-
+    var selectElement = document.getElementById('items');
+        var optionEl = document.createElement('option');
+        optionEl.setAttribute("value", Product.allProducts[i].name);
+        optionEl.textContent = Product.allProducts[i].name;
+        selectElement.appendChild(optionEl);
+        var assetEl = document.createElement('img');
+        assetEl.setAttribute("src", Product.allProducts[i].filePath);
+        assetEl.alt = Product.allProducts[i];
+        optionEl.appendChild(assetEl);
+    }
 }
 
 // When someone submits the form, we need to add the selected item to the cart
 // object, save the whole thing back to local storage and update the screen
 // so that it shows the # of items in the cart and a quick preview of the cart itself.
 function handleSubmit(event) {
-
-  // TODO: Prevent the page from reloading
-
+    event.preventDefault();
+    var quantity = event.target.quantity.value;
+    // TODO: Prevent the page from reloading
+    
   // Do all the things ...
-  addSelectedItemToCart();
+  addSelectedItemToCart(quantity);
   cart.saveToLocalStorage();
   updateCounter();
   updateCartPreview();
@@ -33,7 +39,16 @@ function handleSubmit(event) {
 }
 
 // TODO: Add the selected item and quantity to the cart
-function addSelectedItemToCart() {
+function addSelectedItemToCart(quantity) {
+    var selectElement = document.getElementById('items');
+    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+        for (var i = 0; i < Product.allProducts.length; i++) {
+            if (selectedValue === Product.allProducts[i].name) {
+               var product = Product.allProducts[i].name;
+               var item = new CartItem(product, quantity);
+               console.log(item);
+            } 
+        }
   // TODO: suss out the item picked from the select list
   // TODO: get the quantity
   // TODO: using those, add one item to the Cart

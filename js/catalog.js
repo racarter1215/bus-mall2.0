@@ -70,7 +70,7 @@ function updateCartPreview() {
     cartContentsEl.appendChild(ulEl);
     for (var i = 0; i < cart.items.length; i++) {
         var liEl = document.createElement("li");
-        liEl.textContent = cart.items[i].name + ' : ' + cart.items[i].quantity;
+        liEl.textContent = cart.items[i].product + ' : ' + cart.items[i].quantity;
         ulEl.appendChild(liEL);
     }
   // TODO: Get the item and quantity from the form

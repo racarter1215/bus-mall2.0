@@ -4,22 +4,18 @@
 
 // Set up an empty cart for use on this page.
 var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-var cart = new Cart([]);
+var cart = new Cart(cartItems);
 
 // On screen load, we call this method to put all of the busmall options
 // (the things in the Product.allProducts array) into the drop down list.
 function populateForm() {
+    var selectElement = document.getElementById('items');
     for (var i = 0; i < Product.allProducts.length; i++) {
   //TODO: Add an <option> tag inside the form's select for each product
-    var selectElement = document.getElementById('items');
         var optionEl = document.createElement('option');
         optionEl.setAttribute("value", Product.allProducts[i].name);
         optionEl.textContent = Product.allProducts[i].name;
         selectElement.appendChild(optionEl);
-        var assetEl = document.createElement('img');
-        assetEl.setAttribute("src", Product.allProducts[i].filePath);
-        assetEl.alt = Product.allProducts[i];
-        optionEl.appendChild(assetEl);
     }
 }
 
@@ -28,27 +24,25 @@ function populateForm() {
 // so that it shows the # of items in the cart and a quick preview of the cart itself.
 function handleSubmit(event) {
     event.preventDefault();
-    var quantity = event.target.quantity.value;
-    
+    addSelectedItemToCart();
+    cart.saveToLocalStorage();
+    updateCounter();
+    updateCartPreview();
     // TODO: Prevent the page from reloading
     
   // Do all the things ...
-  addSelectedItemToCart(quantity);
-  cart.saveToLocalStorage();
+  
+  
   
 //   updateCartPreview();
 
 }
 
 // TODO: Add the selected item and quantity to the cart
-function addSelectedItemToCart(quantity) {
-    var selectElement = document.getElementById("items");
-    var selectedValue = selectElement.options[selectElement.selectedIndex].value;
-        for (var i = 0; i < Product.allProducts.length; i++) {
-            if (selectedValue === Product.allProducts[i].name) {
-               var product = Product.allProducts[i].name;
-            } 
-        }
+function addSelectedItemToCart() {
+    var itemValue = document.getElementById("items").value;
+    var quantityValue = document.getElementById("quantity").value;
+    cart.addItem(itemValue, quantityValue);
   // TODO: suss out the item picked from the select list
   // TODO: get the quantity
   // TODO: using those, add one item to the Cart
@@ -64,8 +58,10 @@ function updateCounter() {
 
 // // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
-    var cartContentsEl = document.getElementById("cartContents");
-    var itemsValue = document.getElementById("items");
+    var product = null;
+    var previewEl = document.getElementById("cartContents");
+    previewEl.innerHTML = null;
+    var itemName = document.getElementById("items").value;
     for (var i = 0; i < Product.allProducts.length; i++) {
         if (Product.allProducts[i].name == itemName) {
             product = Product.allProducts[i];
@@ -73,7 +69,7 @@ function updateCartPreview() {
     }
     var imgEl = document.createElement('img');
     imgEl.src = product.filePath;
-    cartContentsEl.appendChild(imgEl);
+    previewEl.appendChild(imgEl);
 //   // TODO: Get the item and quantity from the form
 //   // TODO: Add a new element to the cartContents div with that information
 }

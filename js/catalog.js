@@ -3,6 +3,7 @@
 'use strict';
 
 // Set up an empty cart for use on this page.
+var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 var cart = new Cart([]);
 
 // On screen load, we call this method to put all of the busmall options
@@ -34,22 +35,18 @@ function handleSubmit(event) {
   // Do all the things ...
   addSelectedItemToCart(quantity);
   cart.saveToLocalStorage();
-  updateCounter();
-  updateCartPreview();
+  
+//   updateCartPreview();
 
 }
 
 // TODO: Add the selected item and quantity to the cart
 function addSelectedItemToCart(quantity) {
-    var selectElement = document.getElementById('items');
+    var selectElement = document.getElementById("items");
     var selectedValue = selectElement.options[selectElement.selectedIndex].value;
         for (var i = 0; i < Product.allProducts.length; i++) {
             if (selectedValue === Product.allProducts[i].name) {
                var product = Product.allProducts[i].name;
-               var item = new CartItem(product, quantity);
-               cart.items.push(item);
-               console.log(item);
-               console.log(cart.items);
             } 
         }
   // TODO: suss out the item picked from the select list
@@ -59,22 +56,26 @@ function addSelectedItemToCart(quantity) {
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
 function updateCounter() {
-    var itemCount = document.getElementById="itemCount";
-    itemCount.textContent = cart.items.length;
+    var itemCountEl = document.getElementById=("itemCount");
+    itemCountEl.textContent = cart.items.length;
+    
 }
-// TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
+
+
+// // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
     var cartContentsEl = document.getElementById("cartContents");
-    cartContentsEl.innerHTML= '';
-    var ulEl = document.createElement("ul");
-    cartContentsEl.appendChild(ulEl);
-    for (var i = 0; i < cart.items.length; i++) {
-        var liEl = document.createElement("li");
-        liEl.textContent = cart.items[i].product + ' : ' + cart.items[i].quantity;
-        ulEl.appendChild(liEL);
+    var itemsValue = document.getElementById("items");
+    for (var i = 0; i < Product.allProducts.length; i++) {
+        if (Product.allProducts[i].name == itemName) {
+            product = Product.allProducts[i];
+        };
     }
-  // TODO: Get the item and quantity from the form
-  // TODO: Add a new element to the cartContents div with that information
+    var imgEl = document.createElement('img');
+    imgEl.src = product.filePath;
+    cartContentsEl.appendChild(imgEl);
+//   // TODO: Get the item and quantity from the form
+//   // TODO: Add a new element to the cartContents div with that information
 }
 
 // Set up the "submit" event listener on the form.
@@ -86,3 +87,4 @@ catalogForm.addEventListener('submit', handleSubmit);
 // Before anything else of value can happen, we need to fill in the select
 // drop down list in the form.
 populateForm();
+updateCounter();

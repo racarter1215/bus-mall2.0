@@ -52,7 +52,6 @@ function addSelectedItemToCart() {
 function updateCounter() {
     var itemCountEl = document.getElementById=("itemCount");
     itemCountEl.textContent = cart.items.length;
-    
 }
 
 
